@@ -1,6 +1,6 @@
 import regex
 
-with open("day01_input.txt") as f:
+with open("./day01_input.txt") as f:
     lines = f.read().splitlines()
 
 ### PART 1
