@@ -1,4 +1,4 @@
-import re
+import regex
 
 with open("day01_input.txt") as f:
     lines = f.read().splitlines()
@@ -8,16 +8,17 @@ with open("day01_input.txt") as f:
 total = 0
 
 for line in lines:
-    digits = re.findall("\d", line)
+    digits = regex.findall("\d", line)
+    # only the first and the last digit
     number = int(digits[0] + digits[-1])
     total += number
 
-print(total)
+print(total)  # 56397
 
 ### PART 2
 
 total = 0
-digits_eng = {
+digits_letters = {
     "one": "1",
     "two": "2",
     "three": "3",
@@ -28,18 +29,22 @@ digits_eng = {
     "eight": "8",
     "nine": "9",
 }
-choices = "|".join(k for k in digits_eng)
+choices = "|".join(k for k in digits_letters)
 
 for line in lines:
-    digits = re.findall(f"(?=(\d|{choices}))", line)
+    # Sometimes words overlap, like "oneight",
+    # regex findall overlapped argument is perfect
+    # But with re module, a lookahead is necessary : "(?=(\d|{choices}))"
+    digits = regex.findall(f"\d|{choices}", line, overlapped=True)
     number = ""
 
+    # only the first and the last digit
     for i in [0, -1]:
-        if digits[i] in digits_eng:
-            number += digits_eng[digits[i]]
+        if digits[i] in digits_letters:
+            number += digits_letters[digits[i]]
         else:
             number += digits[i]
 
     total += int(number)
 
-print(total)
+print(total)  # 55701
